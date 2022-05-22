@@ -1,4 +1,4 @@
-import { composeWithMongoose } from "graphql-compose-mongoose"
+import { composeMongoose, composeWithMongoose } from "graphql-compose-mongoose"
 import { model, Schema } from "mongoose"
 
 // define data model
@@ -19,4 +19,4 @@ const PostSchema = new Schema({
 // create table instance
 export const PostModel = model('Post', PostSchema)
 // create type compose of graphql
-export const PostTC = composeWithMongoose(PostModel)
+export const PostTC = composeMongoose(PostModel)
