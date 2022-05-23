@@ -36,6 +36,9 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    profile: {
+        type: String
+    },
     contact: {
         phone: {
             type: String,

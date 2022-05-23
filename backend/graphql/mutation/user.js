@@ -12,6 +12,7 @@ export const createTecher = schemaComposer.createResolver({
         password: "String!",
         firstname: "String!",
         lastname: "String!",
+        profile: "String",
         contact: "JSON!",
         type: "String!",
         room: "String!"
@@ -26,6 +27,7 @@ export const createTecher = schemaComposer.createResolver({
             salt: salt,
             firstname: args.firstname,
             lastname: args.lastname,
+            profile: args.profile,
             contact: args.contact,
             type: args.type,
             room: args.room

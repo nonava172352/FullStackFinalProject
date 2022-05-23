@@ -2,7 +2,7 @@ import { createServer } from 'http'
 const express = require('express')
 const app = express()
 const cors = require("cors")
-const port = 3000
+const port = 3000 || process.env.port
 
 import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-express'
