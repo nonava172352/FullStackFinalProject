@@ -2,7 +2,7 @@ import { createServer } from 'http'
 const express = require('express')
 const app = express()
 const cors = require("cors")
-const port = 3000 || process.env.port
+const { PORT = 3000 }  = process.env
 
 import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-express'
@@ -28,7 +28,7 @@ const startApolloServer = async () => {
 
     await apolloServer.start()
     apolloServer.applyMiddleware({ app, path: '/graphql' })
-    httpServer.listen({ port: port })
+    httpServer.listen({ port: PORT })
 }
 
 console.log("Mongo db Connected");
