@@ -1,18 +1,18 @@
 import { PostTC } from "../../model/post";
 import { UserTC } from "../../model/user";
 
-// UserTC.addRelation(
-//     'posts',
-//     {
-//         resolver: PostTC.getResolver('findMany'),
-//         projection: { _id: 1 }, // user เป็นตัวหลัก พอ query post มาต้องเอา project หาใน post ให้เหมือนกับใน _id ของ user
-//         prepareArgs: {
-//             filter: (user) => {
-//                 authorId: user._id
-//             }
-//         }
-//     }
-// )
+UserTC.addRelation(
+    'posts',
+    {
+        resolver: PostTC.mongooseResolvers.findMany(),
+        projection: { _id: 1 },
+        prepareArgs: {
+            filter: (user) => {
+                authorId: user._id
+            }
+        },
+    },
+)
 
 // UserTC.addFields({
 //     contact: {

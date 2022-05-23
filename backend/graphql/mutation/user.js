@@ -1,78 +1,100 @@
 import { schemaComposer } from "graphql-compose" // เช็คที่เป็น schemaComposer != SchemaComposer
 import { UserModel, UserTC } from "../../model/user"
 
+const crypto = require('crypto');
 
-// // สร้าง obj type ไว้สำหรับ return
-// const loginPayload = schemaComposer.createObjectTC({
-//     name: 'loginPayload',
-//     fields: {
-//         status: 'String!',
-//         token: 'String'
-//     }
-// })
+export const createTecher = schemaComposer.createResolver({
+    name: "createTecher",
+    kind: "mutation",
+    type: "JSON!",
+    args: {
+        email: "String!",
+        password: "String!",
+        firstname: "String!",
+        lastname: "String!",
+        profile: "String",
+        contact: "JSON!",
+        type: "String!",
+        room: "String!"
+    },
+    resolve: async ({ args }) => {
+        const salt = crypto.randomBytes(16).toString('hex');
+        const encypt = crypto.pbkdf2Sync(args.password, salt, 1000, 32, 'sha512').toString('hex')
 
-// export const createUser = UserTC.getResolver('createOne')
-// export const login = schemaComposer.createResolver({
-//     name: 'login',
-//     kind: 'mutation', // ประเภทของ Resolver นี้
-//     // type: 'String', // type ใส่ได้แค่อันเดียว ถ้าเป็น obj หรืออะไรที่ใน default ไม่มีให้ต้องมา define type เอง
-//     type: 'loginPayload', // type แบบสร้างเอง
-//     args: {
-//         username: 'String!',
-//         password: 'String!'
-//     },
-//     // resolve: async ({ args }) => {
-//     //     const { username, password } = args
-//     //     const user = await UserModel.findOne({ username: username })
+        const response = await UserModel.create({
+            email: args.email,
+            password: encypt,
+            salt: salt,
+            firstname: args.firstname,
+            lastname: args.lastname,
+            profile: args.profile,
+            contact: args.contact,
+            type: args.type,
+            room: args.room
+        })
 
-//     //     if (!user) {
-//     //         throw new Error("Username not Found")
-//     //     }
-//     //     const validPassword = () => {
-//     //         if (user.password === password) {
-//     //             return true
-//     //         } else {
-//     //             return false
-//     //         }
-//     //     }
+        return response
+    }
+})
 
-//     //     if (!validPassword) {
-//     //         throw new Error("Password Incorrect")
-//     //     }
+export const createStudent = schemaComposer.createResolver({
+    name: "createStudent",
+    kind: "mutation",
+    type: "JSON!",
+    args: {
+        email: "String!",
+        password: "String!",
+        firstname: "String!",
+        lastname: "String!",
+        contact: "JSON!",
+        type: "String!",
+        studentId: "String!",
+        branch: "String",
+        program: "String!"
+    },
+    resolve: async ({ args }) => {
+        const salt = crypto.randomBytes(16).toString('hex');
+        const encypt = crypto.pbkdf2Sync(args.password, salt, 1000, 32, 'sha512').toString('hex')
 
-//     //     return `Welcome ${user.name}`
-//     // } // resovler ของ type String
-//     resolve: async ({ args }) => {
-//         const { username, password } = args
-//         const user = await UserModel.findOne({ username: username })
+        const response = await UserModel.create({
+            email: args.email,
+            password: encypt,
+            salt: salt,
+            firstname: args.firstname,
+            lastname: args.lastname,
+            contact: args.contact,
+            type: args.type,
+            studentId: args.studentId,
+            branch: args.branch,
+            program: args.program
+        })
 
-//         if (!user) {
-//             return {
-//                 status: 'Fail', // format ต้องตรงกันตามที่ define ใน type
-//                 token: ''
-//             }
-//         }
-        
-//         const validPassword = () => {
-//             if (user.password === password) {
-//                 return true
-//             } else {
-//                 return false
-//             }
-//         }
+        return response
+    }
+})
 
-//         if (!validPassword) {
-//             return {
-//                 status: 'Fail', // format ต้องตรงกันตามที่ define ใน type
-//                 token: ''
-//             }
-//         }
+export const login = schemaComposer.createResolver({
+    name: "login",
+    kind: "mutation",
+    type: "JSON",
+    args: {
+        email: "String!",
+        password: "String!",
+    },
+    resolve: async ({ args }) => {
+        const user = await UserModel.findOne({
+            email: args.email
+        })
 
-//         return {
-//             status: 'Login Complete', // format ต้องตรงกันตามที่ define ใน type
-//             token: user.name
-//         }
-//     } // resovler ของ type loginPayload
-// })
-
-// // mutation => มีการจัดการกับข้อมูล
+        const salt = user.salt
+        const encypt = crypto.pbkdf2Sync(args.password, salt, 1000, 32, 'sha512').toString('hex')
+        if (encypt === user.password) {
+            return user
+        } else {
+            return {
+                "error" : true,
+                "msg": "Incorrect password"
+            }
+        }
+    }
+})
