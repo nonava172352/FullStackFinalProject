@@ -21,7 +21,12 @@ const routes = [
         meta: {
             hideNavbar: true,
         }
-    }
+    },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('../views/Myprofilepage.vue')
+    },
     
 ]
 

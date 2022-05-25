@@ -16,11 +16,11 @@
   </div>
   
   <form class="form-inline" style="margin-right: 20px;">
-  <a class="navbar-brand" href="#">
-    <img src="../assets/profile.webp" width="40" height="40" class="d-inline-block align-top" alt="" style="margin-right: 5px;">
+  <a class="navbar-brand" href="/profile">
+    <img src="../assets/profile.webp" width="37" height="37" class="d-inline-block align-top" alt="" style="margin-right: 5px;">
   </a>
     <!-- <button class="btn btn-secondary" style="margin-right: 20px; font-size: 18px" type="submit">ข้อมูลส่วนตัว</button> -->
-    <button class="btn btn-secondary" type="submit" style="font-size: 15px">ลงชื่อออก</button>
+    <button class="btn btn-dark" type="submit">ลงชื่อออก</button>
   </form>
 </nav>
 </template>
