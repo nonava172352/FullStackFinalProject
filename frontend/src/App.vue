@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar/>
+    <Navbar v-if="!$route.meta.hideNavbar"/>
     <router-view></router-view>
   </div>
 </template>
@@ -11,8 +11,8 @@ import Navbar from './components/Navbar.vue'
 export default {
   name: 'App',
   components: {
-    Navbar
-  }
+    Navbar,
+}
 }
 </script>
 

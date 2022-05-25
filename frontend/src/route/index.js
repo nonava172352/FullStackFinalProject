@@ -13,6 +13,14 @@ const routes = [
         path: '/postpage',
         name: 'post',
         component: () => import('../views/Postpage.vue')
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/Login.vue'),
+        meta: {
+            hideNavbar: true,
+        }
     }
     
 ]
