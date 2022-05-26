@@ -64,11 +64,12 @@ export const UserModel = model('User', UserSchema)
 const studentDetail = UserModel.discriminator('Student', new Schema({
     studentId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     branch: {
         type: String,
-        enum: ["SE", "Network", "Multi", null]
+        enum: ["SE", "Network", "Multi", "null"]
     },
     program: {
         type: String,
