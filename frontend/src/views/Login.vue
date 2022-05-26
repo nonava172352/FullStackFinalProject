@@ -25,6 +25,7 @@
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 placeholder="Email"
+                v-model="email"
               />
             </div>
             <div class="mb-2">
@@ -33,6 +34,7 @@
                 class="form-control"
                 id="exampleInputPassword1"
                 placeholder="Password"
+                v-model="password"
               />
             </div>
             
@@ -86,3 +88,14 @@ body {
      font-size: 18px;
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      email: "",
+      password: ""
+    }
+  }
+}
+</script>
