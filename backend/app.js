@@ -19,6 +19,7 @@ import './dbAdmin'
 import schema from './graphql'
 
 import { uploadPostImage } from './s3'
+import { buildSchema } from 'graphql'
 
 app.use(cors("*"))
 app.use(express.json())
@@ -40,11 +41,19 @@ app.post('/image', upload.single('image'), async (req, res) => {
         })
     }
 })
+// const schema = buildSchema(`
+//     type Query {
+//         hello: String
+//     }
+// `)
+
+// const root = {hello: () => 'Hello Graphl'}
 
 const startApolloServer = async () => {
     const httpServer = createServer(app)
     const apolloServer = new ApolloServer({
         schema,
+        // rootValue: root,
         introspection: true,
         plugins: [
             ApolloServerPluginDrainHttpServer({ httpServer }),

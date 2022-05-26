@@ -145,7 +145,7 @@
 }
 
 #contcolor2 {
-  background-color: rgb(247, 247, 247);
+  background-color: rgb(233, 233, 233);
   /* border: 0px solid rgb(0, 0, 0); */
   padding: 10px;
   color: rgb(0, 0, 0);
