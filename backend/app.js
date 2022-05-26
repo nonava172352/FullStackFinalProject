@@ -27,7 +27,7 @@ app.use(express.json())
 app.post('/image', upload.single('image'), async (req, res) => {
     try {
         const file = req.file
-        const result = await uploadPostImage(file)
+        const result = await uploadPostImage(file, "post")
         await deleteFile(file.path)
 
         res.status(201).send({
@@ -48,6 +48,25 @@ app.post('/image', upload.single('image'), async (req, res) => {
 // `)
 
 // const root = {hello: () => 'Hello Graphl'}
+
+app.post('/profile', upload.single('profile'), async (req, res) => {
+    try {
+        const file = req.file
+        const result = await uploadPostImage(file, "profile")
+        await deleteFile(file.path)
+
+        res.status(201).send({
+            "msg": "image successfully upload",
+            "location": result.Location
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            "error": "Internal Server Error"
+        })
+    }
+})
 
 const startApolloServer = async () => {
     const httpServer = createServer(app)

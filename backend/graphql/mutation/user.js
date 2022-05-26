@@ -46,10 +46,11 @@ export const createStudent = schemaComposer.createResolver({
         password: "String!",
         firstname: "String!",
         lastname: "String!",
+        profile: "String",
         contact: "JSON!",
         type: "String!",
         studentId: "String!",
-        branch: "String",
+        branch: "String!",
         program: "String!"
     },
     resolve: async ({ args }) => {
@@ -62,6 +63,7 @@ export const createStudent = schemaComposer.createResolver({
             salt: salt,
             firstname: args.firstname,
             lastname: args.lastname,
+            profile: args.profile,
             contact: args.contact,
             type: args.type,
             studentId: args.studentId,
@@ -69,6 +71,102 @@ export const createStudent = schemaComposer.createResolver({
             program: args.program
         })
 
+        return response
+    }
+})
+
+export const updateTeacherId = schemaComposer.createResolver({
+    name: "updateTeacher",
+    kind: "mutation",
+    type: "JSON!",
+    args: {
+        _id: "String!",
+        password: "String",
+        firstname: "String",
+        lastname: "String",
+        profile: "String",
+        contact: "JSON",
+        room: "String"
+    },
+    resolve: async ({ args }) => {
+        const user = await UserModel.findOne({
+            _id: args._id
+        })
+
+        let password
+        if (args.password !== undefined) {
+            const salt = user.salt
+            const encypt = crypto.pbkdf2Sync(args.password, salt, 1000, 32, 'sha512').toString('hex')
+            password = encypt
+        } else {
+            password = user.password
+        }
+
+        const firstname = args.firstname || user.firstname
+        const lastname = args.lastname || user.lastname
+        const profile = args.profile || user.profile
+        const contact = args.contact || user.contact
+        const room = args.room || user.room
+
+        const payload = {
+            password: password,
+            firstname: firstname,
+            lastname: lastname,
+            profile: profile,
+            contact: contact,
+            room: room
+        }
+
+        const response = await UserModel.findByIdAndUpdate({"_id": args._id}, payload)
+
+        return response
+    }
+})
+
+export const updateStudentId = schemaComposer.createResolver({
+    name: "updateStudentId",
+    kind: "mutation",
+    type: "JSON!",
+    args: {
+        _id: "String!",
+        password: "String",
+        firstname: "String",
+        lastname: "String",
+        profile: "String",
+        contact: "JSON",
+        branch: "String",
+    },
+    resolve: async ({ args }) => {
+        const user = await UserModel.findOne({
+            _id: args._id
+        })
+
+        let password
+        if (args.password !== undefined) {
+            const salt = user.salt
+            const encypt = crypto.pbkdf2Sync(args.password, salt, 1000, 32, 'sha512').toString('hex')
+            password = encypt
+        } else {
+            password = user.password
+        }
+
+        const firstname = args.firstname || user.firstname
+        const lastname = args.lastname || user.lastname
+        const profile = args.profile || user.profile
+        const contact = args.contact || user.contact
+        const branch = args.branch || user.branch
+
+        const payload = {
+            password: password,
+            firstname: firstname,
+            lastname: lastname,
+            profile: profile,
+            contact: contact,
+            branch: branch
+        }
+
+        const response = await UserModel.findByIdAndUpdate({"_id": args._id}, payload)
+        
         return response
     }
 })

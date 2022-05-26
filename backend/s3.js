@@ -10,10 +10,15 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-export const uploadPostImage = (image) => {
+export const uploadPostImage = (image, type) => {
+    let bucketName = "mypostimagebucket"
+    if (type === "profile") {
+        bucketName = "myprofileimagebucket"
+    }
+
     const fileStream = fs.createReadStream(image.path)
     const payload = {
-        Bucket: "mypostimagebucket",
+        Bucket: bucketName,
         Body: fileStream,
         Key: image.filename
     }
