@@ -39,14 +39,58 @@
         </div>
       </div>
 
+
+      <div class="modal fade" id="PostBlogModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 45%">
+          <div class="modal-content">
+            <div class="modal-header">
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="เขียนหัวข้อ" v-model="title" />
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div>
+                <div class="mb-3">
+                  <textarea rows="5" type="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="เขียนเนื้อหา" v-model="content"></textarea>
+                  <div class="mt-4">
+                    <label for="formFile" class="form-label" style="
+                          display: flex;
+                          align-items: start;
+                          justify-content: start;
+                        ">เลือกไฟล์รูปภาพ</label>
+                    <input class="form-control" type="file" id="formFile" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <div style="width: 100%">
+                <div class="d-flex" style="
+                      width: 100%;
+                      display: flex;
+                      align-items: end;
+                      justify-content: end;
+                    ">
+                  <button class="btn btn-warning" type="submit" @click="addBlog()" style="width: 100px">
+                    โพสต์
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
       <div class="col" id="bgcolor">
         <div class="position">
           <form class="d-flex" style="width: 45%; margin-top: 2%">
             <button class="btn btn-success me-2" type="submit">Search</button>
             <input class="form-control me-2" type="search" placeholder="ค้นห้าโพสต์ที่เกี่ยวข้อง" aria-label="Search" />
-            <button class="btn btn-warning" type="submit" style="width: 200px">
-              เขียนโพสต์
-            </button>
+            <a href="BlogModal" style="width: 200px" class="btn btn-warning" @click="getBlog(post)"
+              data-bs-toggle="modal" data-bs-target="#PostBlogModal">เขียนโพสต์</a>
           </form>
         </div>
 
@@ -146,7 +190,7 @@
                   {{ Blog.content }}
                 </p>
                 <div class="d-flex justify-content-between">
-                  <button type="button" class="btn btn-outline-danger">
+                  <button @click="deleteBlog(Blog)" type="button" class="btn btn-outline-danger">
                     ลบโพสต์
                   </button>
                   <a href="BlogModal" class="btn btn-light" @click="getComment(Blog)" data-bs-toggle="modal"
@@ -210,10 +254,69 @@ export default {
       comments: [],
       post: [],
       comment: "",
-      token: ""
+      token: "",
+      title:"",
+      content:""
     };
   },
   methods: {
+    deleteBlog(blog){
+      axios.delete(process.env.VUE_APP_HOST + 'blog/' + blog.blog_id + '/' + this.user.email, {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }).then((res) => {
+        alert("ลบสำเร็จ")
+        this.getblog()
+      }).catch(error => alert("ไม่สามารถลบได้"))
+    },
+
+    addBlog(){
+           this.checklogin();
+      if (this.content == "" && this.title == "") {
+        alert("กรุณาพิมพ์ข้อความ");
+        return;
+      } else {
+        this.user = jwtDecode(this.token)
+        if (this.$cookies.get('refresh_token') != null) {
+          this.user = jwtDecode(this.$cookies.get('refresh_token'))
+
+        }
+        console.log(this.user)
+        if (this.token != null) {
+          axios
+            .post(
+              process.env.VUE_APP_HOST + "blog/create",
+              {
+                title: this.title,
+                content: this.content,
+                img: "",
+                create_by_email: this.user.email
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${this.token}`,
+                },
+              }
+            )
+            .then((res) => {
+              if (res) {
+                alert("บันทึกข้อความสำเร็จ");
+                this.getblog()
+              }
+            })
+            .catch((error) => {
+              alert(error);
+              console.log(error);
+            });
+        } else {
+          alert("กรุณา login")
+        }
+      }
+      this.title =''
+      this.content = ''
+    },
+
     getblog() {
       axios
         .get(process.env.VUE_APP_HOST + `blog`)
@@ -222,6 +325,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+
     checklogin() {
       console.log("test")
       if (this.$cookies.get("refresh_token") != null) {
@@ -259,7 +363,8 @@ export default {
         .then((res) => {
           this.comments = res.data;
         });
-    }, addComment() {
+    }, 
+    addComment() {
 
       this.checklogin();
       if (this.comment == "") {
@@ -295,7 +400,7 @@ export default {
                     this.comments = res.data;
                   });
                 alert("บันทึกข้อความสำเร็จ");
-      this.comment = ''
+                this.comment = ''
 
               }
             })
