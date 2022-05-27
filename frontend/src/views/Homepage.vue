@@ -387,7 +387,6 @@ export default {
       this.title = ''
       this.content = ''
     },
-
     getblog() {
       axios
         .get(process.env.VUE_APP_HOST + `blog`)
@@ -396,16 +395,6 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    // getUser(){
-    //   axios
-    //     .get(process.env.VUE_APP_HOST + `users`)
-    //     .then((res) => {
-    //       this.users = res.data;
-    //     })
-    //     .catch((error) => console.log(error));
-    // }
-    // ,
-
     checklogin() {
       console.log("test")
       if (this.$cookies.get("refresh_token") != null) {

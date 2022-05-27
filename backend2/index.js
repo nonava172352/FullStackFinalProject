@@ -7,21 +7,27 @@ const http = require("http");
 const cookieParser = require('cookie-parser');
 require('dotenv').config()
 
+const corsOptions = {
+  origin: 'http://18.234.86.129:8080',
+  credentials: true,
+};
+// console.log(FRONTEND_IP)
+app.options('http://18.234.86.129:8080', cors())
+
 let app = express();
 const server = http.createServer(app);
 app.use(bodyParser.json());  // ให้ app(express) ใช้งานการ parse json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(morgan('dev')); // ให้ app(express) ใช้งานการ morgam module
-app.use(cors()); // ให้ app(express) ใช้งานการ cors module
+app.use(cors(corsOptions)); // ให้ app(express) ใช้งานการ cors module
 app.use(cookieParser());
 const authRouter = require('./routes/auth-routes')
 const commentRouter = require('./routes/comment-routes')
 const blogRouter = require('./routes/blog-routes')
-// const userRouter = require('./routes/user-routes')
+
 app.use('/auth', authRouter)
 app.use('/comment', commentRouter)
 app.use('/blog', blogRouter)
-// app.use('/user', userRouter)
 const port = parseInt(process.env.PORT, 10) || 3000
 app.use(json());
 app.set("port", port)
