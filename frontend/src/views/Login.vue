@@ -47,6 +47,7 @@
               id="loginbtn"
               type="submit"
               class="btn btn-primary mb-1"
+              @click="login"
             >
               เข้าสู่ระบบ
             </button>
@@ -90,11 +91,35 @@ body {
 </style>
 
 <script>
+import axios from "axios";
+import { jwtDecode } from "../jwt-decode";
 export default {
   data() {
     return {
       email: "",
       password: ""
+    }
+  },
+  methods: {
+    login(){
+      if(this.email == "" && this.password == ""){
+        alert("กรุณากรอกข้อมูล")
+      }else{
+        axios.post(process.env.VUE_APP_HOST +'auth/login', {email: this.email, password: this.password}).then((res) => {
+          this.$cookies.set("refresh_token", res.data.tokens.refreshToken);
+          this.$accessToken = res.data.tokens.accessToken;
+          this.$users = jwtDecode(this.$accessToken);
+          this.email = "";
+          this.password = "";
+          console.log(this.$users)
+          alert("ล็อคอินสำเร็จ");
+        }).catch((error) => {
+            console.log("error login")
+            console.log(error)
+            this.password = '';
+            alert("Email หรือ รหัสผ่านไม่ถูกต้อง")
+          });
+      }
     }
   }
 }
