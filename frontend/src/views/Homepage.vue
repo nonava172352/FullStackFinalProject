@@ -280,8 +280,18 @@ import axios from "axios";
 export default {
   data() {
     return {
-      Blog: [],
+      Blogs: []
     };
-  },
+  },methods: {
+    getblog(){
+      axios.get(process.env.VUE_APP_HOST+ `blog`).then((res) => {
+        this.Blogs = res.data;
+        console.log(this.Blogs)
+      }).catch((error) => console.log(error))
+    }
+  },created(){
+    this.getblog()
+  }
+  
 };
 </script>
