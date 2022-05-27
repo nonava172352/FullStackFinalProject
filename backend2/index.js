@@ -17,9 +17,11 @@ app.use(cookieParser());
 const authRouter = require('./routes/auth-routes')
 const commentRouter = require('./routes/comment-routes')
 const blogRouter = require('./routes/blog-routes')
+// const userRouter = require('./routes/user-routes')
 app.use('/auth', authRouter)
 app.use('/comment', commentRouter)
 app.use('/blog', blogRouter)
+// app.use('/user', userRouter)
 const port = parseInt(process.env.PORT, 10) || 3000
 app.use(json());
 app.set("port", port)

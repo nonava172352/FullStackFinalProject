@@ -9,9 +9,9 @@
       <li class="nav-item active">
         <router-link class="nav-link text-white" to="/" style="font-size: 20px;">Home</router-link>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <router-link class="nav-link text-white" to="/postpage" style="font-size: 20px">Post</router-link>
-      </li>
+      </li> -->
     </ul>
   </div>
   
@@ -19,7 +19,7 @@
 
   <a class="navbar-brand" href="/profile">
       <label>{{email}}</label>
-    <img src="../assets/profile.webp" width="37" height="37" class="d-inline-block align-top" alt="" style="margin-right: 5px;">
+    <!-- <img src="../assets/profile.webp" width="37" height="37" class="d-inline-block align-top" alt="" style="margin-right: 5px;margin-left: 20px"> -->
   </a>
     <!-- <button class="btn btn-secondary" style="margin-right: 20px; font-size: 18px" type="submit">ข้อมูลส่วนตัว</button> -->
     <button class="btn btn-dark" @click="logout" type="submit">ลงชื่อออก</button>

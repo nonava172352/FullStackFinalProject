@@ -11,7 +11,7 @@
               </a>
               <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                 <li class="w-100">
-                  <a href="/it" class="nav-link px-0">
+                  <a data-bs-toggle="modal" data-bs-target="#PostBlogModal" href="BlogModal" class="nav-link px-0">
                     <span class="d-none d-sm-inline">สาขาวิชาเทคโนโลยีสารสนเทศ (IT)</span>
                   </a>
                 </li>
@@ -53,14 +53,14 @@
                 <div class="mb-3">
                   <textarea rows="5" type="email" class="form-control" id="exampleInputEmail1"
                     aria-describedby="emailHelp" placeholder="เขียนเนื้อหา" v-model="content"></textarea>
-                  <div class="mt-4">
+                  <!-- <div class="mt-4">
                     <label for="formFile" class="form-label" style="
                           display: flex;
                           align-items: start;
                           justify-content: start;
                         ">เลือกไฟล์รูปภาพ</label>
-                    <input class="form-control" type="file" id="formFile" />
-                  </div>
+                    <input class="form-control" type="file" id="formFile"/>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -87,8 +87,9 @@
       <div class="col" id="bgcolor">
         <div class="position">
           <form class="d-flex" style="width: 45%; margin-top: 2%">
-            <button class="btn btn-success me-2" type="submit">Search</button>
-            <input class="form-control me-2" type="search" placeholder="ค้นห้าโพสต์ที่เกี่ยวข้อง" aria-label="Search" />
+            <!-- <button class="btn btn-success me-2" type="submit">Search</button> -->
+            <input class="form-control me-2" type="search" placeholder="ค้นห้าโพสต์ที่เกี่ยวข้อง" aria-label="Search"
+              v-model="search" />
             <a href="BlogModal" style="width: 200px" class="btn btn-warning" @click="getBlog(post)"
               data-bs-toggle="modal" data-bs-target="#PostBlogModal">เขียนโพสต์</a>
           </form>
@@ -124,11 +125,12 @@
                         justify-content: start;
                         margin-left: 2%;
                       ">
-                      {{ post.create_by_email }}
+                      ผู้เขียน {{ post.create_by_email }}
                     </p>
 
 
-                    <div id="contcolor3" v-for="(comment, index ) in comments " :key='index'>
+                    <div id="contcolor3" v-for="(comment, index ) in comments " :key='index'
+                      style="margin-bottom: 15px">
                       <p style="
                           display: flex;
                           align-items: start;
@@ -138,8 +140,9 @@
                           aria-label="Close" style="
                             display: flex;
                             align-items: start;
-                            justify-content: start;
-                          "></button>
+                            justify-content: start;"
+                            v-if="comment.comment_by_email == user.email"
+                          ></button>
                         {{ comment.comment_by_email }}
                       </p>
                       <p class="card-text d-flex" style="
@@ -168,33 +171,87 @@
           </div>
         </div>
 
-        <!-- <div v-if="search != ''"> -->
-        <div v-for="(Blog, index) in Blogs" :key="index">
-          <div class="position">
-            <div class="card" style="width: 45%; margin-top: 2%">
-              <img class="card-img-top" src="../assets/testpic.jpg" alt="Card image cap" style="max-width: 100%" />
-              <div class="card-body">
-                <h5 class="card-title" id="contcolor" style="
+        <div v-if="search != ''">
+          <p class="mt-3">ผลลัพธ์การค้นหา</p>
+          <div v-for="(post, index) in filteredList" :key="index">
+            <div class="position">
+              <div class="card" style="width: 45%; margin-bottom: 2%">
+                <!-- <img class="card-img-top" :src="post.img" alt="Card image cap" style="max-width: 100%" /> -->
+                <div class="card-body">
+                  <h5 class="card-title" id="contcolor" style="
                     display: flex;
                     align-items: start;
                     justify-content: start;
                     font-weight: 900;
                   ">
-                  {{ Blog.title }}
-                </h5>
-                <p class="card-text text-left" style="
+                    {{ post.title }}
+                  </h5>
+                  <p class="card-text text-left" style="
                     display: flex;
                     align-items: start;
                     justify-content: start;
                   " id="contcolor2">
-                  {{ Blog.content }}
-                </p>
-                <div class="d-flex justify-content-between">
-                  <button @click="deleteBlog(Blog)" type="button" class="btn btn-outline-danger">
-                    ลบโพสต์
-                  </button>
-                  <a href="BlogModal" class="btn btn-light" @click="getComment(Blog)" data-bs-toggle="modal"
-                    data-bs-target="#BlogModal">เเสดงความคิดเห็น</a>
+                    {{ post.content }}
+                  </p>
+                  <div class="d-flex justify-content-between" v-if="post.create_by_email == user.email">
+                    <button @click="deleteBlog(Post)" type="button" class="btn btn-outline-danger">
+                      ลบโพสต์
+                    </button>
+                    <a href="BlogModal" class="btn btn-light" @click="getComment(Post)" data-bs-toggle="modal"
+                      data-bs-target="#BlogModal">เเสดงความคิดเห็น</a>
+                  </div>
+                  <div class="d-flex" v-if="post.create_by_email != user.email" style="
+                    display: flex;
+                    align-items: end;
+                    justify-content: end;
+                  ">
+                    <a href="BlogModal" class="btn btn-light" @click="getComment(Post)" data-bs-toggle="modal"
+                      data-bs-target="#BlogModal">เเสดงความคิดเห็น</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div v-if="search === ''" class="mt-5">
+
+          <div v-for="(Blog, index) in Blogs" :key="index">
+            <div class="position">
+              <div class="card" style="width: 45%; margin-bottom: 2%;">
+                <!-- <img class="card-img-top" :src="Blog.img" alt="Card image cap" style="max-width: 100%" /> -->
+                <div class="card-body">
+                  <h5 class="card-title" id="contcolor" style="
+                    display: flex;
+                    align-items: start;
+                    justify-content: start;
+                    font-weight: 900;
+                  ">
+                    {{ Blog.title }}
+                  </h5>
+                  <p class="card-text text-left" style="
+                    display: flex;
+                    align-items: start;
+                    justify-content: start;
+                  " id="contcolor2">
+                    {{ Blog.content }}
+                  </p>
+                  <div class="d-flex justify-content-between" v-if="Blog.create_by_email == user.email">
+                    <button @click="deleteBlog(Blog)" type="button" class="btn btn-outline-danger">
+                      ลบโพสต์
+                    </button>
+                    <a href="BlogModal" class="btn btn-light" @click="getComment(Blog)" data-bs-toggle="modal"
+                      data-bs-target="#BlogModal">เเสดงความคิดเห็น</a>
+                  </div>
+                  <div class="d-flex" v-if="Blog.create_by_email != user.email" style="
+                    display: flex;
+                    align-items: end;
+                    justify-content: end;
+                  ">
+                    <a href="BlogModal" class="btn btn-light" @click="getComment(Blog)" data-bs-toggle="modal"
+                      data-bs-target="#BlogModal">เเสดงความคิดเห็น</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -244,23 +301,37 @@
 </style>
 
 <script>
+
 import axios from "axios";
 import { jwtDecode } from "../jwt-decode";
+
+
 export default {
   data() {
     return {
       Blogs: [],
-      user: [],
+      // users: [],
       comments: [],
-      post: [],
       comment: "",
+      post: [],
       token: "",
-      title:"",
-      content:""
+      title: "",
+      content: "",
+      search: '',
+      users: '',
     };
+
+  },
+  computed: {
+    filteredList() {
+      console.log(this.Blogs)
+      return this.Blogs.filter(post1 => {
+        return post1.title.toLowerCase().includes(this.search.toLowerCase())
+      })
+    }
   },
   methods: {
-    deleteBlog(blog){
+    deleteBlog(blog) {
       axios.delete(process.env.VUE_APP_HOST + 'blog/' + blog.blog_id + '/' + this.user.email, {
         headers: {
           Authorization: `Bearer ${this.token}`,
@@ -271,8 +342,8 @@ export default {
       }).catch(error => alert("ไม่สามารถลบได้"))
     },
 
-    addBlog(){
-           this.checklogin();
+    addBlog() {
+      this.checklogin();
       if (this.content == "" && this.title == "") {
         alert("กรุณาพิมพ์ข้อความ");
         return;
@@ -313,7 +384,7 @@ export default {
           alert("กรุณา login")
         }
       }
-      this.title =''
+      this.title = ''
       this.content = ''
     },
 
@@ -321,10 +392,19 @@ export default {
       axios
         .get(process.env.VUE_APP_HOST + `blog`)
         .then((res) => {
-          this.Blogs = res.data;
+          this.Blogs = res.data.sort().reverse();
         })
         .catch((error) => console.log(error));
     },
+    // getUser(){
+    //   axios
+    //     .get(process.env.VUE_APP_HOST + `users`)
+    //     .then((res) => {
+    //       this.users = res.data;
+    //     })
+    //     .catch((error) => console.log(error));
+    // }
+    // ,
 
     checklogin() {
       console.log("test")
@@ -363,7 +443,7 @@ export default {
         .then((res) => {
           this.comments = res.data;
         });
-    }, 
+    },
     addComment() {
 
       this.checklogin();
@@ -428,7 +508,7 @@ export default {
     }
   },
   created() {
-    this.getblog();
+    this.getblog()
   }, updated() {
     this.checklogin()
   }
