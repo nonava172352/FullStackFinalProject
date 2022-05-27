@@ -15,6 +15,7 @@ create table blog(
     blog_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     title TEXT NOT NULL,
     content TEXT NOT NULL,
+    create_by_email TEXT,
     img TEXT,
     created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
@@ -22,6 +23,7 @@ create table comment(
     comment_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     comment_by_email TEXT,
     comment_by_firstname TEXT,
+    comment TEXT,
     blog_id TEXT,
     created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 )

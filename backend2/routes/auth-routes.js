@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
 
     }
 })
-router.get("/refresh_token", (req, res) => {
+router.get("/refresh_token",async (req, res) => {
     try {
       const authHeader = req.headers["authorization"];
       const refreshToken = authHeader && authHeader.split(" ")[1];

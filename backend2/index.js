@@ -15,7 +15,11 @@ app.use(morgan('dev')); // ให้ app(express) ใช้งานการ mo
 app.use(cors()); // ให้ app(express) ใช้งานการ cors module
 app.use(cookieParser());
 const authRouter = require('./routes/auth-routes')
+const commentRouter = require('./routes/comment-routes')
+const blogRouter = require('./routes/blog-routes')
 app.use('/auth', authRouter)
+app.use('/comment', commentRouter)
+app.use('/blog', blogRouter)
 const port = parseInt(process.env.PORT, 10) || 3000
 app.use(json());
 app.set("port", port)
