@@ -78,12 +78,12 @@
         </div>
 
         <div v-if="search != ''">
-          <div v-for="(post, index) in filtereListd" :key="index">
+          <div v-for="(Blog, index) in Blogs" :key="index">
             <div class="position">
               <div class="card" style="width: 45%; margin-top: 2%">
                 <img
                   class="card-img-top"
-                  :src="post.image"
+                  :src="Blog.img"
                   alt="Card image cap"
                   style="max-width: 100%"
                 />
@@ -98,7 +98,7 @@
                       font-weight: 900;
                     "
                   >
-                    {{ post.title }}
+                    {{ Blog.title }}
                   </h5>
                   <p
                     class="card-text text-left"
@@ -109,7 +109,7 @@
                     "
                     id="contcolor2"
                   >
-                    {{ post.content }}
+                    {{ Blog.content }}
                   </p>
                   <div
                     style="
@@ -121,7 +121,7 @@
                     <a
                       href="BlogModal"
                       class="btn btn-light"
-                      @click="getBlog(post)"
+                      @click="getBlog(Blog)"
                       >เเสดงความคิดเห็น</a
                     >
                   </div>
@@ -171,8 +171,18 @@ import axios from "axios";
 export default {
   data() {
     return {
-      Blog: []
+      Blogs: []
     };
-  },
+  },methods: {
+    getblog(){
+      axios.get(process.env.VUE_APP_HOST+ `blog`).then((res) => {
+        this.Blogs = res.data;
+        console.log(this.Blogs)
+      }).catch((error) => console.log(error))
+    }
+  },created(){
+    this.getblog()
+  }
+  
 };
 </script>
