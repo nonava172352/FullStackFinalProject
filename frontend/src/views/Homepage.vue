@@ -77,54 +77,59 @@
           </form>
         </div>
 
-        <div class="position">
-          <div class="card" style="width: 45%; margin-top: 2%">
-            <img
-              class="card-img-top"
-              src="../assets/testpic.jpg"
-              alt="Card image cap"
-              style="max-width: 100%"
-            />
-            <div class="card-body">
-              <h5
-                class="card-title"
-                id="contcolor"
-                style="
-                  display: flex;
-                  align-items: start;
-                  justify-content: start;
-                  font-weight: 900;
-                "
-              >
-                ถามเรื่องค่าเทอม
-              </h5>
-              <p
-                class="card-text text-left"
-                style="
-                  display: flex;
-                  align-items: start;
-                  justify-content: start;
-                "
-                id="contcolor2"
-              >
-                ค่าเทอมเทอมนี้ต้องจ่ายเท่าไหร่หรอครับ ผมสาขาไอที เเขนง SE ครับ
-                ขอบคุณครับ ค่าเทอมเทอมนี้ต้องจ่ายเท่าไหร่หรอครับ ผมสาขาไอที
-                เเขนง SE ครับ ขอบคุณครับ ค่าเทอมเทอมนี้ต้องจ่ายเท่าไหร่หรอครับ
-                ผมสาขาไอที เเขนง SE ครับ ขอบคุณครับ
-                ค่าเทอมเทอมนี้ต้องจ่ายเท่าไหร่หรอครับ ผมสาขาไอที เเขนง SE ครับ
-                ขอบคุณครับ ค่าเทอมเทอมนี้ต้องจ่ายเท่าไหร่หรอครับ ผมสาขาไอที
-                เเขนง SE ครับ ขอบคุณครับ ค่าเทอมเทอมนี้ต้องจ่ายเท่าไหร่หรอครับ
-                ผมสาขาไอที เเขนง SE ครับ ขอบคุณครับ
-              </p>
-              <div
-                style="display: flex; align-items: end; justify-content: end"
-              >
-                <a href="#" class="btn btn-light">เเสดงความคิดเห็น</a>
+        <div v-if="search != ''">
+          <div v-for="(post, index) in filtereListd" :key="index">
+            <div class="position">
+              <div class="card" style="width: 45%; margin-top: 2%">
+                <img
+                  class="card-img-top"
+                  :src="post.image"
+                  alt="Card image cap"
+                  style="max-width: 100%"
+                />
+                <div class="card-body">
+                  <h5
+                    class="card-title"
+                    id="contcolor"
+                    style="
+                      display: flex;
+                      align-items: start;
+                      justify-content: start;
+                      font-weight: 900;
+                    "
+                  >
+                    {{ post.title }}
+                  </h5>
+                  <p
+                    class="card-text text-left"
+                    style="
+                      display: flex;
+                      align-items: start;
+                      justify-content: start;
+                    "
+                    id="contcolor2"
+                  >
+                    {{ post.content }}
+                  </p>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: end;
+                      justify-content: end;
+                    "
+                  >
+                    <a
+                      href="BlogModal"
+                      class="btn btn-light"
+                      @click="getBlog(post)"
+                      >เเสดงความคิดเห็น</a
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   </div>
@@ -153,6 +158,21 @@
 }
 
 #bgcolor {
-  background-image: linear-gradient(to left, rgb(255, 255, 255), rgb(206, 231, 255));
+  background-image: linear-gradient(
+    to left,
+    rgb(255, 255, 255),
+    rgb(206, 231, 255)
+  );
 }
 </style>
+
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      Blog: []
+    };
+  },
+};
+</script>
