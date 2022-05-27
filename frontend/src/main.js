@@ -6,8 +6,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import VueCookies from 'vue-cookies'
 
 Vue.use(BootstrapVue)
+Vue.use(VueCookies, { expire: '15m'})
+Vue.prototype.$users = {user_name: "name"}
+Vue.prototype.$accessToken ="start"
 Vue.config.productionTip = false
 
 new Vue({

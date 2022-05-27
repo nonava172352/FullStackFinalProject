@@ -19,7 +19,6 @@ router.post('/login', async (req, res) => {
         console.log(users.rows[0].password)
         console.log(password)
         if(users.rows[0].password !== password){
-            console.log('test')
             validPassword = false;
             return res.status(401).json({error: "Password is incorrect"})
         }else{
@@ -34,7 +33,7 @@ router.post('/login', async (req, res) => {
                     users.rows[0].detail,
                     users.rows[0].facebook
                 ) 
-    
+                console.log("login สำเร็จ")
                 res.json({ tokens: tokens });
             }
         }
