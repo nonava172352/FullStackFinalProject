@@ -61,6 +61,7 @@
           <hr />
         </div>
       </div>
+
       <div class="col" id="bgcolor">
         <div class="position">
           <form class="d-flex" style="width: 45%; margin-top: 2%">
@@ -77,62 +78,162 @@
           </form>
         </div>
 
-        <div v-if="search != ''">
-          <div v-for="(post, index) in filtereListd" :key="index">
-            <div class="position">
-              <div class="card" style="width: 45%; margin-top: 2%">
-                <img
-                  class="card-img-top"
-                  :src="post.image"
-                  alt="Card image cap"
-                  style="max-width: 100%"
-                />
-                <div class="card-body">
-                  <h5
-                    class="card-title"
-                    id="contcolor"
-                    style="
-                      display: flex;
-                      align-items: start;
-                      justify-content: start;
-                      font-weight: 900;
-                    "
-                  >
-                    {{ post.title }}
-                  </h5>
-                  <p
-                    class="card-text text-left"
-                    style="
-                      display: flex;
-                      align-items: start;
-                      justify-content: start;
-                    "
-                    id="contcolor2"
-                  >
-                    {{ post.content }}
-                  </p>
-                  <div
-                    style="
-                      display: flex;
-                      align-items: end;
-                      justify-content: end;
-                    "
-                  >
-                    <a
-                      href="BlogModal"
-                      class="btn btn-light"
-                      @click="getBlog(post)"
-                      >เเสดงความคิดเห็น</a
-                    >
+        <!-- <div v-if="search != ''"> -->
+        <!-- <div v-for="(post, index) in filtereListd" :key="index"> -->
+        <div
+          class="modal fade"
+          id="BlogModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" style="max-width: 45%">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5
+                class="card-title"
+                id="contcolor"
+                style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;
+                  font-weight: 900;
+                "
+              >
+                Blog.title
+              </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="mb-3 justify-content-end">
+                    <p
+                class="card-text text-left"
+                style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;
+                "
+                id="contcolor2"
+              >
+                Blog.content
+              </p>
+              <p style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;
+                  margin-left: 2%;
+                "
+                >ผู้เขียน Blog.email</p>
+              <!-- ทำลูปคอมเเม้นตรงนี้ ข้างล่าง-->
+              <div id="contcolor3">
+                <p style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;
+                "><button type="button" class="btn-close btn-close-white" aria-label="Close" style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;"></button> ผู้เขียน Blog.email.comment</p>
+                
+              <p
+                class="card-text d-flex"
+                style="
+                  display: flex;
+                  align-items: end;
+                  justify-content: end;
+                "
+              >
+                Blog.comment
+              </p>
+              </div>
+              <!-- ทำลูปคอมเเม้นตรงนี้ ข้างบน-->
+                  
                   </div>
+
+                </form>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <div style="width: 100%">
+                <form class="d-flex" style="width: 100%">
+                  <input
+                    class="form-control me-2"
+                    type="input"
+                    placeholder="เขียนความคิดเห็น"
+                    aria-label="Search"
+                  />
+                  <button
+                    class="btn btn-success"
+                    type="submit"
+                    style="width: 100px"
+                  >
+                    ตกลง
+                  </button>
+                </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="position">
+          <div class="card" style="width: 45%; margin-top: 2%">
+            <img
+                  class="card-img-top"
+                  src="../assets/testpic.jpg"
+                  alt="Card image cap"
+                  style="max-width: 100%"
+                />
+            <div class="card-body">
+              <h5
+                class="card-title"
+                id="contcolor"
+                style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;
+                  font-weight: 900;
+                "
+              >
+                Blog.title
+              </h5>
+              <p
+                class="card-text text-left"
+                style="
+                  display: flex;
+                  align-items: start;
+                  justify-content: start;
+                "
+                id="contcolor2"
+              >
+                Blog.content
+              </p>
+              <div
+                class="d-flex justify-content-between"
+              >
+                <button type="button" class="btn btn-outline-danger">ลบโพสต์</button>
+                <a
+                  href="BlogModal"
+                  class="btn btn-light"
+                  @click="getBlog(post)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#BlogModal"
+                  >เเสดงความคิดเห็น</a
+                >
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <style>
@@ -157,6 +258,14 @@
   border-radius: 6px;
 }
 
+#contcolor3 {
+  background-color: rgb(71, 71, 71);
+  /* border: 0px solid rgb(0, 0, 0); */
+  padding: 10px;
+  color: rgb(255, 255, 255);
+  border-radius: 6px;
+}
+
 #bgcolor {
   background-image: linear-gradient(
     to left,
@@ -171,7 +280,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      Blog: []
+      Blog: [],
     };
   },
 };
